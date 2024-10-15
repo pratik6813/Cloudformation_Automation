@@ -4,7 +4,7 @@
       "LambdaExecutionRole": {
         "Type": "AWS::IAM::Role",
         "Properties": {
-          "RoleName": "SimpleLambdaExecutionRole",
+          "RoleName": "SimpleLambdaExecutionRole1",
           "AssumeRolePolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [
