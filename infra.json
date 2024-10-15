@@ -1,0 +1,95 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+      "LambdaExecutionRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "RoleName": "SimpleLambdaExecutionRole",
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "lambda.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "Policies": [
+            {
+              "PolicyName": "LambdaBasicExecutionPolicy",
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "arn:aws:logs:*:*:*"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "SimpleLambdaFunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+          "FunctionName": "SimpleLambdaFunction",
+          "Handler": "index.handler",
+          "Role": {
+            "Fn::GetAtt": [
+              "LambdaExecutionRole",
+              "Arn"
+            ]
+          },
+          "Code": {
+            "ZipFile": {
+              "Fn::Join": [
+                "\n",
+                [
+                  "exports.handler = async (event) => {",
+                  "   console.log('Hello from Lambda!');",
+                  "   return {",
+                  "       statusCode: 200,",
+                  "       body: JSON.stringify('Hello from Lambda!')",
+                  "   };",
+                  "};"
+                ]
+              ]
+            }
+          },
+          "Runtime": "nodejs14.x",
+          "Timeout": 10,
+          "MemorySize": 128
+        }
+      }
+    },
+    "Outputs": {
+      "LambdaFunctionArn": {
+        "Description": "ARN of the Lambda function",
+        "Value": {
+          "Fn::GetAtt": [
+            "SimpleLambdaFunction",
+            "Arn"
+          ]
+        }
+      },
+      "LambdaExecutionRoleArn": {
+        "Description": "ARN of the IAM Role for Lambda",
+        "Value": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        }
+      }
+    }
+  }
+  
