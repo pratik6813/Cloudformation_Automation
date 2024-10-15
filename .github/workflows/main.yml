@@ -24,8 +24,5 @@ jobs:
 
     - name: Deploy CloudFormation Stack
       run: |
-        aws cloudformation deploy \
-          --template-file infra.json \
-          --stack-name MyCloudFormationStack \
-          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
-          --region ap-south-1  # Replace with your desired AWS region
+        aws cloudformation deploy --template-file infra.json --stack-name MyCloudFormationStack \
+          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM --region ap-south-1 
