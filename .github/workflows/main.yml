@@ -1,0 +1,31 @@
+name: Deploy CloudFormation Stack
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow on push to the main branch
+  workflow_dispatch:  # Allow manual triggers from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: AKIAQMEY6JWJGTQHC5BG
+        aws-secret-access-key: n46nV15g8XVRcXi90WYFg7YLRfp4ecsUm/Y+VtvB
+        aws-region: ap-south-1
+  # Replace with your desired AWS region
+
+    - name: Deploy CloudFormation Stack
+      run: |
+        aws cloudformation deploy \
+          --template-file infra.json \
+          --stack-name MyCloudFormationStack \
+          --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+          --region ap-south-1  # Replace with your desired AWS region
